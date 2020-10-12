@@ -29,8 +29,8 @@ int main()
     // Read the stream
     StreamDataEnumerator dataEnumeratorSec = StreamDataEnumerator(isSec.rdbuf());
     while (dataEnumeratorSec.MoveNext()) {
-        string data = dataEnumeratorSec.Current();
-        cout << data << endl;
+        cout << dataEnumeratorSec.Current() << endl;
+        cout << "Current called again without calling MoveNext(): " << dataEnumeratorSec.Current() << endl;
     }
 
     isSec.close();

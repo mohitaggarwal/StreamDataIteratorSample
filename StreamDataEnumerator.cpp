@@ -1,4 +1,3 @@
-#include <sstream>
 #include "StreamDataEnumerator.h"
 
 namespace StreamDataIteratorSample {
@@ -31,16 +30,20 @@ namespace StreamDataIteratorSample {
             }
             *streamIterator++;
         }
-
+        isMoveNextCalled = isDataPresent;
         return isDataPresent;
     }
 
     string StreamDataEnumerator::Current()
     {
         ostringstream oss;
-        while (streamIterator != eos && *streamIterator != '\n') {
-            oss << *streamIterator++;
+        if (isMoveNextCalled) {
+            while (streamIterator != eos && *streamIterator != '\n') {
+                oss << *streamIterator++;
+            }
+            isMoveNextCalled = false;
+            currentObject = oss.str();
         }
-        return oss.str();
+        return currentObject;
     }
 }
