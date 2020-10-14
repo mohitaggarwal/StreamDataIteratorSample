@@ -8,3 +8,4 @@ data: {"name": "abc4"}
 
 data: {"name": "abc5"}
 
+error: {"message": "Failed to get data."}

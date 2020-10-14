@@ -3,30 +3,27 @@
 namespace StreamDataIteratorSample {
 
     StreamDataEnumerator::StreamDataEnumerator(streambuf* streamBuffer)
+        :dataType(StreamDataType::Data)
     {
         streamIterator = std::istreambuf_iterator<char>(streamBuffer);
-        dataMarkerInStream = "data: ";
+        isMoveNextCalled = false;
     }
 
-    bool StreamDataEnumerator::MoveNext()
+    bool StreamDataEnumerator::moveNext()
     {
         bool isDataPresent = false;
-        int currentPos = 0;
-        int markerLength = dataMarkerInStream.length();
 
-        while (streamIterator != eos) {
-            if (dataMarkerInStream[currentPos] == *streamIterator) {
-                if (currentPos >= markerLength - 1) {
-                    isDataPresent = true;
-                    *streamIterator++;
-                    break;
+        while (streamIterator != eos && !isDataPresent) {
+            ostringstream oss;
+            while (*streamIterator != '\n') {
+                if (*streamIterator == ':') {
+                    if (setStreamDataType(oss.str())) {
+                        isDataPresent = true;
+                        *streamIterator++;
+                        break;
+                    }
                 }
-                else {
-                    currentPos++;
-                }
-            }
-            else {
-                currentPos = 0;
+                oss << *streamIterator++;
             }
             *streamIterator++;
         }
@@ -34,7 +31,7 @@ namespace StreamDataIteratorSample {
         return isDataPresent;
     }
 
-    string StreamDataEnumerator::Current()
+    string StreamDataEnumerator::current()
     {
         ostringstream oss;
         if (isMoveNextCalled) {
@@ -45,5 +42,21 @@ namespace StreamDataIteratorSample {
             currentObject = oss.str();
         }
         return currentObject;
+    }
+
+    bool StreamDataEnumerator::setStreamDataType(const string dataMarker)
+    {
+        bool isDataMarkerPresent = true;
+        if (dataMarker.compare("data") == 0) {
+            dataType = StreamDataType::Data;
+        }
+        else if (dataMarker.compare("error") == 0) {
+            dataType = StreamDataType::Error;
+        }
+        else {
+            isDataMarkerPresent = false;
+        }
+
+        return isDataMarkerPresent;
     }
 }

@@ -7,6 +7,8 @@
 
 using namespace StreamDataIteratorSample;
 
+void printDataType(StreamDataType dataType);
+
 int main()
 {
     cout << "StreamDataResponse file read..." << endl;
@@ -14,8 +16,9 @@ int main()
 
     // Read the stream
     StreamDataEnumerator dataEnumerator = StreamDataEnumerator(is.rdbuf());
-    while (dataEnumerator.MoveNext()) {
-        string data = dataEnumerator.Current();
+    while (dataEnumerator.moveNext()) {
+        printDataType(dataEnumerator.getDataType());
+        string data = dataEnumerator.current();
         cout << data << endl;
     }
 
@@ -28,12 +31,27 @@ int main()
 
     // Read the stream
     StreamDataEnumerator dataEnumeratorSec = StreamDataEnumerator(isSec.rdbuf());
-    while (dataEnumeratorSec.MoveNext()) {
-        cout << dataEnumeratorSec.Current() << endl;
-        cout << "Current called again without calling MoveNext(): " << dataEnumeratorSec.Current() << endl;
+    while (dataEnumeratorSec.moveNext()) {
+        printDataType(dataEnumeratorSec.getDataType());
+        cout << dataEnumeratorSec.current() << endl;
+        cout << "Current called again without calling MoveNext(): " << dataEnumeratorSec.current() << endl;
     }
 
     isSec.close();
+}
+
+void printDataType(StreamDataType dataType) {
+    switch (dataType)
+    {
+    case StreamDataType::Data:
+        cout << "Data type is 'data'" << endl;
+        break;
+    case StreamDataType::Error:
+        cout << "Data type is 'error'" << endl;
+        break;
+    default:
+        break;
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
