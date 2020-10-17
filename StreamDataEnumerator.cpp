@@ -3,9 +3,8 @@
 namespace StreamDataIteratorSample {
 
     StreamDataEnumerator::StreamDataEnumerator(streambuf* streamBuffer)
-        :dataType(StreamDataType::Data)
+        :dataType(StreamDataType::Data), streamIterator(streamBuffer)
     {
-        streamIterator = std::istreambuf_iterator<char>(streamBuffer);
         isMoveNextCalled = false;
     }
 
