@@ -20,15 +20,16 @@ Sample input can be found under TestSamples folder.
 StreamDataEnumerator dataEnumerator = StreamDataEnumerator(streamBuffer);
 while (dataEnumerator.MoveNext()) {
     string data = dataEnumerator.Current();
-	if (streamDataType == StreamDataType::Data)
+    if (streamDataType == StreamDataType::Data)
     {
-		cout << data << endl;
-	}
-	else if (streamDataType == StreamDataType::Error)
-	{
-		// Do the operation for error stream data
-	}
+	cout << data << endl;
+    }
+    else if (streamDataType == StreamDataType::Error)
+    {
+        // Do the operation for error stream data
+    }
 }
+
 ```
 ## Sample Input:
 ```
