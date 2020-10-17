@@ -18,10 +18,17 @@ Sample input can be found under TestSamples folder.
 ## Example use of StreamDataEnumerator:
 ```
 StreamDataEnumerator dataEnumerator = StreamDataEnumerator(streamBuffer);
-    while (dataEnumerator.MoveNext()) {
-        string data = dataEnumerator.Current();
-        cout << data << endl;
-    }
+while (dataEnumerator.MoveNext()) {
+    string data = dataEnumerator.Current();
+	if (streamDataType == StreamDataType::Data)
+        {
+			cout << data << endl;
+		}
+		else if (streamDataType == StreamDataType::Error)
+		{
+			// Do the operation for error stream data
+		}
+}
 ```
 ## Sample Input:
 ```
